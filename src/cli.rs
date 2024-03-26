@@ -108,4 +108,7 @@ pub enum Commands {
     },
     /// Helps you set-up battery for p10k
     Battery,
+
+    /// Prints config path
+    Config,
 }

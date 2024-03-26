@@ -60,6 +60,7 @@ fn main() -> anyhow::Result<()> {
             Logout => oauth::logout(&tasks_database)?,
         },
         Battery => MiscManager.help_p10k_script_generation()?,
+        Config => println!("{}", secrets::config_path()?),
     }
     Ok(())
 }
