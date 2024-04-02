@@ -7,6 +7,7 @@ use console::Term;
 use dialoguer::{theme::ColorfulTheme, Input, Select};
 
 pub struct TaskListManager {
+    // TODO: GoogleApiClient/JiraApiClient enum
     pub client: GoogleApiClient,
 }
 
