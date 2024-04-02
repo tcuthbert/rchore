@@ -2,6 +2,8 @@ use chrono::DateTime;
 use console::style;
 use std::fmt;
 
+use prettytable::format;
+
 #[derive(Default, Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TaskResponse {
@@ -77,12 +79,19 @@ impl Tasks {
             let newdate = datetime.format("%d/%m/%Y");
             format!("{}", newdate)
         };
-        let notes = if self.notes.is_empty() {
-            String::from("No note was added")
+        let mut notes = if self.notes.is_empty() {
+            table!([String::from("No note was added")])
         } else {
-            String::from(&self.notes)
+            table!([String::from(&self.notes)])
         };
-        (String::from(&self.title), status, notes, due)
+
+        let notes_format = format::FormatBuilder::new()
+            .borders(' ')
+            .padding(1, 1)
+            .build();
+
+        notes.set_format(notes_format);
+        (String::from(&self.title), status, notes.to_string(), due)
     }
 }
 
@@ -98,11 +107,13 @@ impl fmt::Display for Tasks {
         } else {
             String::from(&self.due)
         };
+
         let notes = if self.notes.is_empty() {
             String::from("No note added")
         } else {
             String::from(&self.notes)
         };
+
         write!(
             f,
             "{0: <10} | {1: <10} | {2: <10} | {3: <10}",
